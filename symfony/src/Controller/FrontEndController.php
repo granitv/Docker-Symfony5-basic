@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Apps;
+use App\Form\AppsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +15,7 @@ class FrontEndController extends AbstractController
      */
     public function index()
     {
+
         return $this->render("FrontEnd/home.html.twig");
     }
 
@@ -29,8 +32,21 @@ class FrontEndController extends AbstractController
      */
     public function hello(Request $request, $prenom)
     {
+        $user = new Apps();
+        $userForm = $this->createForm(AppsType::class, $user);
+        $userForm->handleRequest($request);
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $newUserData = $userForm->getData();
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($newUserData);
+            $manager->flush();
+            $this->addFlash('success', 'User Added Succesfuly');
+            return $this->redirect('/');
+        }
+
         return $this->render('FrontEnd/hello.html.twig', [
-            'name' => $prenom
+            'name' => $prenom,
+            "form" => $userForm->createView()
         ]);
     }
 
