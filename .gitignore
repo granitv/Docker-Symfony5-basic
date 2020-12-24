@@ -1,12 +1,1 @@
-\.idea/misc\.xml
-
-\.idea/modules\.xml
-
-\.idea/php\.xml
-
-\.idea/test\.iml
-
-\.idea/vcs\.xml
-
-\.idea/workspace\.xml
-\.idea/symfony/vendor/
+symfony/vendor/
