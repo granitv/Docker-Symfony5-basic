@@ -33,17 +33,21 @@
         :list="list2"
         group="people"
         @change="log"
-  
+  handle=".handle"
       >
         <div 
           class="list-group-item"
          
          v-for="(element, index) in list2"
           :key="index"
-        >  <div   @click="moduleDetailes(index)" >  
+        >  
+        
+        <div   @click="moduleDetailes(index)" >  
+         <i class="fa fa-align-justify handle"></i>
         <i v-bind:class="[element.icon]" ></i> {{ element.name }}
          <i class="fa fa-times floatRight" @click="removeAt(index)"></i></div>
-       	<input :id="'module' + index"  type="text" :placeholder="'Add: ' + element.name" class="form-control" style="display:none;" @keyup="addModule(index);"/>
+       	<input :id="'module' + index"  type="text" :placeholder="'Add: ' + element.name" class="form-control" style="display:none;" 
+          :value="element.data" @keyup="addModule(element.type,index);" @change="addModule(element.type,index);"/>
         
           
         </div>
@@ -64,7 +68,9 @@
 let id = 1;
 
 let modules = [];
-let modulesCode = ["h1", "p", "li"]
+let modulesCode = {
+    txt:"p",img: "img",link: "a"}
+    
 import draggable from "vuedraggable";
 export default {
   name: "clone",
@@ -76,53 +82,72 @@ export default {
     data() {
 
 if(localStorage.getItem('list1') && localStorage.getItem('list2')){
+   
+ console.log("before");
     return {
         list2: JSON.parse(localStorage.getItem('list2')),
          list1: [
-            { name: "Img", icon: "fas fa-image", id: 1, data: [] },
-            { name: "Text", icon: "fas fa-font", id: 2, data: [] },
-            { name: "Map", icon: "fas fa-map", id: 3, data: [] },
-            { name: "Icon", icon: "fas fa-icons", id: 4, data: [] },
-            { name: "Link", icon: "fas fa-link", id: 5, data: [] },
-            { name: "Space", icon: "fas fa-people-arrows", id: 6, data: [] }
-        ]
+            { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
+            { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
+            { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
+            { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
+            { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
+            { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
+        ],
+        
+        //list2.forEach(element => console.log(element))
     };
+  console.log("after");
+
 }else{
     return {
         list2: [
         ],
         list1: [
-            { name: "Img", icon: "fas fa-image", id: 1, data: [] },
-            { name: "Text", icon: "fas fa-font", id: 2, data: [] },
-            { name: "Map", icon: "fas fa-map", id: 3, data: [] },
-            { name: "Icon", icon: "fas fa-icons", id: 4, data: [] },
-            { name: "Link", icon: "fas fa-link", id: 5, data: [] },
-            { name: "Space", icon: "fas fa-people-arrows", id: 6, data: [] }
+            { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
+            { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
+            { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
+            { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
+            { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
+            { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
         ]
 
     };
   }
   },
   methods: {
-       addModule: function(id) {
+     getUnits: function() { alert('done')},
+ 
+       addModule: function(type,id) {
+        
 let phone = document.getElementById('phone');
 
-        let addCode = document.createElement(modulesCode[id]);
+        let addCode = document.createElement(modulesCode[type]);
         modules[id] = addCode;
 
         let moduleData = modules[id];
         let input1 = document.getElementById('module' + id);
         var attr = document.createAttribute('id');
+
         attr.value = "moduleInput" + id;
         addCode.setAttributeNode(attr);
 
         let addText = document.getElementById("moduleInput" + id);
 
         if (!document.getElementById("moduleInput" + id)) {
+            if(type === "img"){
+                addCode.src = input1.value;
+            }
             phone.appendChild(moduleData);
-
         } else {
-            addText.innerHTML = input1.value;
+            if(type === "img"){
+                addText.src = input1.value;
+             }else{
+                addText.innerHTML = input1.value;
+            }
+               this.list2[id].data = input1.value;
+               this.list2[id].html = addText.outerHTML;
+
         }
 },
      moduleDetailes: function (id) {
@@ -135,7 +160,7 @@ let phone = document.getElementById('phone');
         }
 
     }
-    console.log(modules);
+   // console.log(modules);
 },
     addOneModule: function(data) {
        this.list2.push(data);
