@@ -13,10 +13,10 @@ class UsersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('email')
-            ->add('appname')
-            ->add('save', SubmitType::class);
+            ->add('name', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('email', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('appname', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('save', SubmitType::class, ['attr' => ['class' => 'my-2 btn btn-info']]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

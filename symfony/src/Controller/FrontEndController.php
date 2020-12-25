@@ -4,19 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Apps;
 use App\Form\AppsType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\AppsRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FrontEndController extends AbstractController
 {
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(AppsRepository $appsR)
     {
+        $allApps = $appsR->findAll();
 
-        return $this->render("FrontEnd/home.html.twig");
+        return $this->render("FrontEnd/home.html.twig", [
+            "allApps" => $allApps
+        ]);
     }
 
     /**

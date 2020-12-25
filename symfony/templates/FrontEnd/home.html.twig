@@ -1,6 +1,22 @@
 {% extends 'FrontEnd/base.html.twig' %}
 
 {% block body %}
-	<h1>Homepage!</h1>
+	<h1>Homepage</h1>
+	<div class="container   ">
+		<div class="row justify-content-center">
+			{% for app in allApps %}
+				<div class="col-md-3 border rounded p-2 m-2">
+					<h4>App:
+						{{loop.index}}</h4>
+					<p>Name:
+						{{ app.name|e }}</p>
+					<p>Version:
+						{{ app.version|e }}</p>
+					<p>Category:
+						{{ app.category|e }}</p>
 
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}
