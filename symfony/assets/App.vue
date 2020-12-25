@@ -119,6 +119,7 @@ if(localStorage.getItem('list1') && localStorage.getItem('list2')){
 
       myFunctionOnLoad: function() {
         let phone = document.getElementById('phone');
+        phone.innerHTML="";
         console.log(phone);
         let i=0;
         for (var key in this.list2) {
@@ -140,9 +141,7 @@ if(localStorage.getItem('list1') && localStorage.getItem('list2')){
      
   	
        addModule: function(type,id) {
-        
 let phone = document.getElementById('phone');
-
         let addCode = document.createElement(modulesCode[type]);
         modules[id] = addCode;
 
@@ -170,9 +169,10 @@ let phone = document.getElementById('phone');
                this.list2[id].html = addText.outerHTML;
 
         }
+        this.myFunctionOnLoad()
 },
      moduleDetailes: function (id) {
-    if (id <= allModules) {
+   
         let input1 = document.getElementById('module' + id);
         if (input1.style.display == "inline") {
             input1.style.display = "none";
@@ -180,7 +180,7 @@ let phone = document.getElementById('phone');
             input1.style.display = "inline";
         }
 
-    }
+
    // console.log(modules);
 },
     addOneModule: function(data) {
