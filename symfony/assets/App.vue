@@ -3,12 +3,13 @@
     <div class="col-3">
       <h3>Draggable 1</h3>
       <draggable style="min-height:500px; background-color:#e3f6f9;" class="list-group" :list="list1" group="people" @change="log">
-        <div
+        <div v-html="element.name"
           class="list-group-item"
           v-for="(element, index) in list1"
           :key="element.name"
         >
-          {{ element.name }} {{ index }}
+         <span v-html="HTMLcontent"></span>
+         {{ element.name }} {{ /* index*/ }}
         </div>
       </draggable>
     </div>
@@ -16,22 +17,22 @@
     <div class="col-3" >
       <h3>Draggable 2</h3>
       <draggable style="min-height:500px; background-color:#e3f6f9;" class="list-group" :list="list2" group="people" @change="log">
-        <div
+        <div v-html="element.name"
           class="list-group-item"
           v-for="(element, index) in list2"
           :key="element.name"
         >
-          {{ element.name }} {{ index }}
+          {{ element.name }} {{  /* index*/ }}
         </div>
       </draggable>
     </div>
-
-    <rawDisplayer class="col-3" :value="list1" title="List 1" />
-
-    <rawDisplayer class="col-3" :value="list2" title="List 2" />
+<div class="row">
+<p class="btn m-2 btn-success col-md-2 " v-on:click="finishModule">Finish</p>
+</div>
   </div>
 </template>
 <script>
+
 import draggable from 'vuedraggable'
 export default {
   name: "two-lists",
@@ -40,25 +41,37 @@ export default {
   components: {
     draggable
   },
+ 
   data() {
+
+if(localStorage.getItem('list1') && localStorage.getItem('list2')){
     return {
-      list1: [
-        { name: "John", id: 1 },
-        { name: "Joao", id: 2 },
-        { name: "Jean", id: 3 },
-        { name: "Gerard", id: 4 }
-      ],
-      list2: [
-        { name: "Img", id: 5 },
-        { name: "Text", id: 6 },
-        { name: "Map", id: 7 },
-        { name: "Icon", id: 8 },
-        { name: "Link", id: 9 },
-        { name: "Space", id: 9 }
-      ]
+        list1: JSON.parse(localStorage.getItem('list1')),
+        list2: JSON.parse(localStorage.getItem('list2'))
     };
+}else{
+    return {
+        list1: [
+        ],
+        list2: [
+            { name: "<i class=\"fas fa-image\"></i> Img", id: 1 },
+            { name: "<i class=\"fas fa-font\"></i> Text", id: 2 },
+            { name: "<i class=\"fas fa-map\"></i> Map", id: 3 },
+            { name: "<i class=\"fas fa-icons\"></i> Icon", id: 4 },
+            { name: "<i class=\"fas fa-link\"></i> Link", id: 5 },
+            { name: "<i class=\"fas fa-people-arrows\"></i> Space", id: 6 }
+        ]
+
+    };
+  }
   },
   methods: {
+    finishModule: function() {
+      //JSON.parse(localStorage.getItem('list2'))
+       localStorage.setItem('list1', JSON.stringify(this.list1));
+       localStorage.setItem('list2', JSON.stringify(this.list2));
+       console.log(localStorage.list2);
+    },
     add: function() {
       this.list.push({ name: "Juan" });
     },
