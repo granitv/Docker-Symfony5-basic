@@ -1,10 +1,20 @@
 {% extends 'FrontEnd/base.html.twig' %}
 
 {% block body %}
-	<h1>Create App!</h1>
-	<p>{{appname|upper}}</p>
-	<div id="app">
-		<App/>
+	<div class="container-fluid">
+		<h1>Create App!</h1>
+		<p>{{appname|upper}}</p>
+
+		<div class="row">
+			<div id="app" class=" col-md-6">
+				<App/>
+			</div>
+			<div class=" col-md-6">
+				<div class=" bg-success rounded phoneMaster" id="phone">
+					<p>qsdsqds</p>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="./js/module.js"></script>
 {% endblock %}

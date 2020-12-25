@@ -9,3 +9,7 @@
     padding-top: 8px;
     padding-bottom: 8px;
 }
+.phoneMaster{
+    min-height: 853px !important;
+    max-width: 480px !important;
+}

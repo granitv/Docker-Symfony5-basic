@@ -1,8 +1,8 @@
 
 <template>
 
-  <div class="row p-4">
-    <div class="col-3">
+  <div class="row   p-4">
+    <div class="col-6">
 
       <h3>Modules</h3>
       <draggable style="min-height:500px; background-color:#e3f6f9;"
@@ -23,7 +23,7 @@
       </draggable>
     </div>
 
-    <div class="col-3">
+    <div class="col-6">
       <h3>Application</h3>
 
       <!--test-->
@@ -55,11 +55,11 @@
       </draggable>
       
     </div>
-    <div class="col-md-5 bg-success rounded" style="minheight: 250px" id="phone"></div>
+ 
 <div class="row">
 
-<p class="btn m-2 btn-success col-md-2 " v-on:click="finishModule">Finish</p>
-      <p class="btn m-2 btn-primary col-md-2 " @click="add">Add Extra Element</p> 
+<p class="btn m-2 btn-success col-md-5 " v-on:click="finishModule">Finish</p>
+      <p class="btn m-2 btn-primary col-md-5 " @click="add">Add Extra Element</p> 
 </div>
   </div>
 </template>
@@ -95,7 +95,7 @@ if(localStorage.getItem('list1') && localStorage.getItem('list2')){
             { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
         ],
         
-        //list2.forEach(element => console.log(element))
+       
     };
   console.log("after");
 
@@ -116,8 +116,29 @@ if(localStorage.getItem('list1') && localStorage.getItem('list2')){
   }
   },
   methods: {
-     getUnits: function() { alert('done')},
- 
+
+      myFunctionOnLoad: function() {
+        let phone = document.getElementById('phone');
+        console.log(phone);
+        let i=0;
+        for (var key in this.list2) {
+          let addCode = document.createElement(this.list2[key].type);
+          var attr = document.createAttribute('id');
+          attr.value = "moduleInput" + i;
+          addCode.setAttributeNode(attr);
+          let addText = document.getElementById("moduleInput" + i);
+          if(this.list2[key].type === "img"){
+            addCode.src = this.list2[key].data;
+          }
+          phone.appendChild(addCode);
+          console.log(this.list2[key].type);
+          i++;
+            console.log(i);
+        }
+        console.log('call on load...');
+      },
+     
+  	
        addModule: function(type,id) {
         
 let phone = document.getElementById('phone');
@@ -189,7 +210,10 @@ let phone = document.getElementById('phone');
     log: function(evt) {
       window.console.log(evt);
     }
-  }
+  },
+   created: function(){
+        this.myFunctionOnLoad()
+      }
 };
 </script>
 
