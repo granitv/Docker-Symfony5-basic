@@ -1,0 +1,11 @@
+
+.floatRight {
+    float: right !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.floatLeft {
+    float: left !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
