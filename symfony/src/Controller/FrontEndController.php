@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Apps;
 use App\Form\AppsType;
-use App\Repository\AppsRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\AppsRepository;
 
 class FrontEndController extends AbstractController
 {
