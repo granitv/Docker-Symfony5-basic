@@ -2,7 +2,7 @@
 <template>
 
   <div class="row   p-4">
-    <div class="col-6">
+    <div class="col-4">
 
       <h3>Modules</h3>
       <draggable style="min-height:500px; background-color:#e3f6f9;"
@@ -23,7 +23,7 @@
       </draggable>
     </div>
 
-    <div class="col-6">
+    <div class="col-8">
       <h3>Application</h3>
 
       <!--test-->
@@ -36,18 +36,25 @@
   handle=".handle"
       >
         <div 
-          class="list-group-item"
+        @dragend="insertModuleInPhone('null',0)"
+          class="list-group-item  p-2  "
          
          v-for="(element, index) in list2"
           :key="index"
         >  
         
-        <div   @click="moduleDetailes(index)" >  
-         <i class="fa fa-align-justify handle"></i>
-        <i v-bind:class="[element.icon]" ></i> {{ element.name }}
-         <i class="fa fa-times floatRight" @click="removeAt(index)"></i></div>
-       	<input :id="'module' + index"  type="text" :placeholder="'Add: ' + element.name" class="form-control" style="display:none;" 
-          :value="element.data" @keyup="addModule(element.type,index);" @change="addModule(element.type,index);"/>
+          <i class="fa fa-lg fa-align-justify handle " style="cursor: grab;"></i>
+
+          <span><i v-bind:class="[element.icon]" class=" ml-2"></i> {{ element.name }}</span>
+
+         
+
+           <span style="position: absolute; right: 0;" class="p-1"><i class="fas fa-edit p-1" style="cursor: pointer;"  @click="moduleDetailes(index)"></i>
+
+         <i class="fa fa-times p-1" style="cursor: pointer;"  @click="removeAt(index)"></i></span>
+
+          <input :id="'module' + index"  type="text" :placeholder="'Add: ' + element.name" class="form-control m-1  " style="display:none;" 
+            :value="element.data" @keyup="insertModuleInPhone(element.type,index)" @change="insertModuleInPhone(element.type,index);"/>
         
           
         </div>
@@ -69,7 +76,7 @@ let id = 1;
 
 let modules = [];
 let modulesCode = {
-    txt:"p",img: "img",link: "a"}
+    txt:"h1",img: "img",link: "a",video: "div"}
     
 import draggable from "vuedraggable";
 export default {
@@ -80,114 +87,78 @@ export default {
     draggable
   },
     data() {
-
-if(localStorage.getItem('list1') && localStorage.getItem('list2')){
-   
- console.log("before");
-    return {
-        list2: JSON.parse(localStorage.getItem('list2')),
-         list1: [
+      if(localStorage.getItem('list1') && localStorage.getItem('list2')){
+        return {
+            list2: JSON.parse(localStorage.getItem('list2')),
+              list1: [
+                { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
+                { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
+                { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
+                { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
+                { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
+                { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
+                { name: "Video", type: "video", icon: "fas fa-video", id: 7, data: [], html: [] }
+            ],
+        };
+      }else{
+        return {
+          list2: [],
+          list1: [
             { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
             { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
             { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
             { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
             { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
             { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
-        ],
-        
-       
-    };
-  console.log("after");
-
-}else{
-    return {
-        list2: [
-        ],
-        list1: [
-            { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
-            { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
-            { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
-            { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
-            { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
-            { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
-        ]
-
-    };
-  }
-  },
+            { name: "Video", type: "video", icon: "fas fa-video", id: 7, data: [], html: [] }
+          ]
+        };
+      }
+    },
   methods: {
+    insertModuleInPhone: function(typed,id) {
 
-      myFunctionOnLoad: function() {
-        let phone = document.getElementById('phone');
-        phone.innerHTML="";
-        console.log(phone);
-        let i=0;
-        for (var key in this.list2) {
-          let addCode = document.createElement(this.list2[key].type);
-          var attr = document.createAttribute('id');
-          attr.value = "moduleInput" + i;
-          addCode.setAttributeNode(attr);
-          let addText = document.getElementById("moduleInput" + i);
-          if(this.list2[key].type === "img"){
-            addCode.src = this.list2[key].data;
-          }
-          phone.appendChild(addCode);
-          console.log(this.list2[key].type);
-          i++;
-            console.log(i);
-        }
-        console.log('call on load...');
-      },
-     
-  	
-       addModule: function(type,id) {
-let phone = document.getElementById('phone');
-        let addCode = document.createElement(modulesCode[type]);
-        modules[id] = addCode;
-
-        let moduleData = modules[id];
+      let phone = document.getElementById('phone');
+      phone.innerHTML="";
+      let i=0;
+      if(typed !== "null"){
         let input1 = document.getElementById('module' + id);
+        this.list2[id].data = input1.value;
+        this.list2[id].html = input1.outHTML;
+      }
+      for (var key in this.list2) {
+        let addCode = document.createElement(modulesCode[this.list2[key].type]);
+        console.log(modulesCode[this.list2[key].type]);
         var attr = document.createAttribute('id');
-
-        attr.value = "moduleInput" + id;
+        attr.value = "moduleInput" + i;
         addCode.setAttributeNode(attr);
-
-        let addText = document.getElementById("moduleInput" + id);
-
-        if (!document.getElementById("moduleInput" + id)) {
-            if(type === "img"){
-                addCode.src = input1.value;
-            }
-            phone.appendChild(moduleData);
-        } else {
-            if(type === "img"){
-                addText.src = input1.value;
-             }else{
-                addText.innerHTML = input1.value;
-            }
-               this.list2[id].data = input1.value;
-               this.list2[id].html = addText.outerHTML;
-
+        let addData = document.getElementById("moduleInput" + i);
+        if(this.list2[key].type === "img"){
+          addCode.src = this.list2[key].data;
+        }else if(this.list2[key].type === "video"){
+          let getFullVideoUrl = this.list2[key].data;
+          addCode.innerHTML = '<iframe src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        }else{
+          addCode.innerHTML = this.list2[key].data;
         }
-        this.myFunctionOnLoad()
-},
-     moduleDetailes: function (id) {
-   
-        let input1 = document.getElementById('module' + id);
-        if (input1.style.display == "inline") {
-            input1.style.display = "none";
-        } else {
-            input1.style.display = "inline";
-        }
-
-
-   // console.log(modules);
-},
+        phone.appendChild(addCode);
+        i++;
+      }
+    },
+    moduleDetailes: function (id) {
+      let input1 = document.getElementById('module' + id);
+      if (input1.style.display == "inline") {
+          input1.style.display = "none";
+      } else {
+          input1.style.display = "inline";
+      }
+      // console.log(modules);
+    },
     addOneModule: function(data) {
-       this.list2.push(data);
+      this.list2.push(data);
     },
     add: function() {
-       this.list2.push({ name: "Extra Module ", id: id++ ,icon: "fas fa-plus-circle"});
+      this.list2.push({ name: "Extra Module ", id: id++ ,icon: "fas fa-plus-circle"});
     },
     replace: function() {
       this.list2 = [{ name: "Edgard" }];
@@ -198,13 +169,19 @@ let phone = document.getElementById('phone');
       };
     },
     removeAt(idx) {
-      this.list2.splice(idx, 1);
+      if(confirm("Do you really want to delete this module?")){
+        this.list2.splice(idx, 1);
+      };
+    },
+    getYouTubeID: function(url){
+      url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+      return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
     },
     finishModule: function() {
       //JSON.parse(localStorage.getItem('list2'))
        localStorage.setItem('list1', JSON.stringify(this.list1));
        localStorage.setItem('list2', JSON.stringify(this.list2));
-       console.log(localStorage.list2);
+      // console.log(localStorage.list2);
        alert("saved");
     },
     log: function(evt) {
@@ -212,7 +189,7 @@ let phone = document.getElementById('phone');
     }
   },
    created: function(){
-        this.myFunctionOnLoad()
+        this.insertModuleInPhone("null",0)
       }
 };
 </script>
