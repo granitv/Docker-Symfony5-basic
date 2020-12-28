@@ -1,6 +1,7 @@
 {% extends 'FrontEnd/base.html.twig' %}
 
 {% block body %}
+	<link rel="stylesheet" href="https://marvelapp.github.io/devices.css/assets/devices.min.css" type="text/css">
 	<div class="container-fluid">
 		<h1>Create App!</h1>
 		<p>{{appname|upper}}</p>
@@ -9,9 +10,22 @@
 			<div id="app" class=" col-md-6">
 				<App/>
 			</div>
-			<div class=" col-md-6">
-				<div class=" bg-success rounded phoneMaster" id="phone"></div>
+			<div class="marvel-device note8">
+				<div class="inner"></div>
+				<div class="overflow">
+					<div class="shadow"></div>
+				</div>
+				<div class="speaker"></div>
+				<div class="sensors"></div>
+				<div class="more-sensors"></div>
+				<div class="sleep"></div>
+				<div class="volume"></div>
+				<div class="camera"></div>
+				<div class="screen">
+					<div class="  rounded phoneMaster row d-flex justify-content-center" id="phone"></div>
+				</div>
 			</div>
+
 		</div>
 	</div>
 	<script src="./js/module.js"></script>

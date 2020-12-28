@@ -10,6 +10,11 @@
     padding-bottom: 8px;
 }
 .phoneMaster{
-    min-height: 853px !important;
+    max-height: 822px;
+  /*  max-width: 400px;*/
+
+    overflow-y: scroll;
+    /* min-height: 853px !important;
     max-width: 480px !important;
+*/
 }

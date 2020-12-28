@@ -53,10 +53,17 @@
 
          <i class="fa fa-times p-1" style="cursor: pointer;"  @click="removeAt(index)"></i></span>
 
-          <input :id="'module' + index"  type="text" :placeholder="'Add: ' + element.name" class="form-control m-1  " style="display:none;" 
-            :value="element.data" @keyup="insertModuleInPhone(element.type,index)" @change="insertModuleInPhone(element.type,index);"/>
-        
-          
+          <div  :id="'showModule' + index"  style="display:none;" >
+            <input :id="'module' + index"  type="text" :placeholder="'Add: ' + element.name" class="form-control m-1  " 
+              :value="element.data" @keyup="insertModuleInPhone(element.type,index)" @change="insertModuleInPhone(element.type,index);"/>
+              
+            <div class="col-md-2">
+              <label>Size:</label>
+              <select  @change="insertModuleInPhone(element.type,index);" class="form-control col-md-3" :id="'moduleSize' + index">
+              <option  v-for="(element2, index) in size" :value="element2"  :selected="element.size == element2 || (element.size != element2 && element2 == 12) "  >{{element2}}</option>
+            </select>
+            </div>
+          </div>
         </div>
       
       </draggable>
@@ -77,7 +84,7 @@ let id = 1;
 let modules = [];
 let modulesCode = {
     txt:"h1",img: "img",link: "a",video: "div"}
-    
+
 import draggable from "vuedraggable";
 export default {
   name: "clone",
@@ -91,27 +98,29 @@ export default {
         return {
             list2: JSON.parse(localStorage.getItem('list2')),
               list1: [
-                { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
-                { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
-                { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
-                { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
-                { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
-                { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
-                { name: "Video", type: "video", icon: "fas fa-video", id: 7, data: [], html: [] }
+                { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [],size: 0, },
+                { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [],size: 0, },
+                { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [],size: 0, },
+                { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [],size: 0, },
+                { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [],size: 0, },
+                { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [],size: 0, },
+                { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], html: [],size: 0, }
             ],
+            size: [1,2,3,4,5,6,7,8,9,10,11,12],
         };
       }else{
         return {
           list2: [],
           list1: [
-            { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [] },
-            { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [] },
-            { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [] },
-            { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [] },
-            { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [] },
-            { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [] },
-            { name: "Video", type: "video", icon: "fas fa-video", id: 7, data: [], html: [] }
-          ]
+            { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], html: [],size: 0, },
+            { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], html: [],size: 0, },
+            { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], html: [],size: 0, },
+            { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], html: [],size: 0, },
+            { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], html: [],size: 0, },
+            { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], html: [],size: 0, },
+            { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], html: [],size: 0, }
+          ],
+           size: [1,2,3,4,5,6,7,8,9,10,11,12],
         };
       }
     },
@@ -122,22 +131,32 @@ export default {
       phone.innerHTML="";
       let i=0;
       if(typed !== "null"){
-        let input1 = document.getElementById('module' + id);
-        this.list2[id].data = input1.value;
-        this.list2[id].html = input1.outHTML;
+        let input = document.getElementById('module' + id);
+        let inputSize = document.getElementById('moduleSize' + id);
+        this.list2[id].data = input.value;
+        this.list2[id].html = input.outHTML;
+        this.list2[id].size = inputSize.value;
+        console.log(this.list2[id].size);
       }
       for (var key in this.list2) {
         let addCode = document.createElement(modulesCode[this.list2[key].type]);
-        console.log(modulesCode[this.list2[key].type]);
         var attr = document.createAttribute('id');
         attr.value = "moduleInput" + i;
         addCode.setAttributeNode(attr);
         let addData = document.getElementById("moduleInput" + i);
+        addCode.classList.add("col-md-"+this.list2[key].size);
         if(this.list2[key].type === "img"){
           addCode.src = this.list2[key].data;
+          addCode.style = "max-width: inherit;height: 100%;";
         }else if(this.list2[key].type === "video"){
           let getFullVideoUrl = this.list2[key].data;
-          addCode.innerHTML = '<iframe src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+          addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
+          addCode.innerHTML = '<iframe style=" position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;" src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        }else if(this.list2[key].type === "link"){
+          addCode.href = this.list2[key].data;
+          addCode.innerHTML = this.list2[key].data;
+          // let getFullVideoUrl = this.list2[key].data;
+          // addCode.innerHTML = '<iframe src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
         }else{
           addCode.innerHTML = this.list2[key].data;
         }
@@ -146,11 +165,11 @@ export default {
       }
     },
     moduleDetailes: function (id) {
-      let input1 = document.getElementById('module' + id);
-      if (input1.style.display == "inline") {
-          input1.style.display = "none";
+      let input = document.getElementById('showModule' + id);
+      if (input.style.display == "inline") {
+          input.style.display = "none";
       } else {
-          input1.style.display = "inline";
+          input.style.display = "inline";
       }
       // console.log(modules);
     },
