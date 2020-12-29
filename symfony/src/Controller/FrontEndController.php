@@ -24,6 +24,17 @@ class FrontEndController extends AbstractController
     }
 
     /**
+     * @Route("/pdf/{url?0}", name="pdf")
+     */
+    public function pdf($url)
+    {
+        $src = $url;
+        return $this->render("FrontEnd/pdf.html.twig", [
+            "src" => "./assets/$src"
+        ]);
+    }
+
+    /**
      * @Route("/test/{age<\d+>?0}",name="test", methods={"GET","POST"}, host="127.0.0.1", schemes={"https","http"})
      */
     public function test(Request $request, $age)

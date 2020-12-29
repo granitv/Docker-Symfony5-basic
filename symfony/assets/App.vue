@@ -2,6 +2,7 @@
 <template>
 
   <div class="row   p-4">
+  
     <div class="row">
         <!-- Button trigger modal -->
         <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -179,6 +180,11 @@ let modulesCode4 = {
       type:["row"],
       input:["text"],
       acro:["Add your space tag here"]
+      },
+    pdf:{
+      type:["div"],
+      input:["text","url"],
+      acro:["Add your text here","Add your pdf file name .pdf here"]
       }
 };
 let basicAppInfo;
@@ -195,17 +201,21 @@ let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [
                 { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], typestyle: [],size: 0, },
                 { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], typestyle: [],size: 0, },
                 { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], typestyle: [],size: 0, },
-                { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], typestyle: [],size: 0, }];
+                { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], typestyle: [],size: 0, },
+                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, }];
 let modulesCode = {
     txt:"h1",img: "img",link: "a",video: "div"}
 let size= [1,2,3,4,5,6,7,8,9,10,11,12];
+import pdf from 'vue-pdf'
 import draggable from "vuedraggable";
 export default {
+
   name: "clone",
   display: "Clone",
   order: 1,
   components: {
-    draggable
+    draggable,
+    pdf
   },
     data() {
       if(localStorage.getItem('list2')){
@@ -271,6 +281,9 @@ export default {
           addCode.alt = this.list2[key].data[1];
           
           addCode.style = "max-width: inherit;height: 100%;";
+        }else if(this.list2[key].type === "pdf"){
+          addCode.style = "hight:280px; padding: 0 !important;"; 
+          addCode.innerHTML = '<iframe scrolling="no" style="height: inherit;padding: 0 !important; overflow:hidden; width: 100vw;max-width: 100%;" src="http://localhost:9090/pdf/'+this.list2[key].data[1]+'"></iframe>';
         }else if(this.list2[key].type === "video"){
           let getFullVideoUrl = this.list2[key].data[0];
           addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
