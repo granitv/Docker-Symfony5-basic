@@ -185,6 +185,11 @@ let modulesCode4 = {
       type:["div"],
       input:["text","url"],
       acro:["Add your text here","Add your pdf file name .pdf here"]
+      },
+    map:{
+      type:["div"],
+      input:["address"],
+      acro:["Add your address here"]
       }
 };
 let basicAppInfo;
@@ -284,6 +289,9 @@ export default {
         }else if(this.list2[key].type === "pdf"){
           addCode.style = "hight:280px; padding: 0 !important;"; 
           addCode.innerHTML = '<iframe scrolling="no" style="height: inherit;padding: 0 !important; overflow:hidden; width: 100vw;max-width: 100%;" src="http://localhost:9090/pdf/'+this.list2[key].data[1]+'"></iframe>';
+        }else if(this.list2[key].type === "map"){
+          addCode.style = "hight:280px !important; padding: 0 !important;"; 
+          addCode.innerHTML = '<div style="width: 100%"><iframe width="100%" height="inherit" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q='+this.list2[key].data[0]+'&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe></div>';
         }else if(this.list2[key].type === "video"){
           let getFullVideoUrl = this.list2[key].data[0];
           addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
