@@ -12,9 +12,14 @@
 .phoneMaster{
     max-height: 822px;
   /*  max-width: 400px;*/
-
+ 
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     /* min-height: 853px !important;
     max-width: 480px !important;
 */
 }
+.showBorderInPhone > * {
+                border: 1px solid darkcyan;	
+         
+            	}

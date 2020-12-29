@@ -1,16 +1,35 @@
 {% extends 'FrontEnd/base.html.twig' %}
 
 {% block body %}
-	<link rel="stylesheet" href="https://marvelapp.github.io/devices.css/assets/devices.min.css" type="text/css">
+
+	<link rel="stylesheet" href="./css/devices.min.css" type="text/css">
 	<div class="container-fluid">
+		<p style="float: right;" class="col-md-1 p-2">
+			<span class="m-2" style="width:95px; cursor: pointer;" onclick="changeDisplayType('note8')">
+				<i class="fa fa-4x fa-mobile" aria-hidden="true"></i>
+			</span>
+			<span class="m-2" style="width:95px; cursor: pointer;" onclick="changeDisplayType('iphone8plus')">
+				<i class="fa fa-4x fa-mobile-alt" aria-hidden="true"></i>
+			</span>
+			<span class="m-2" style="width:95px; cursor: pointer;" onclick="changeDisplayType('ipad')">
+				<i class="fas fa-4x fa-tablet-alt"></i>
+			</span>
+			<span class="m-2" style="width:95px; cursor: pointer;" onclick="changeDisplayType('macbook')">
+				<i class="fas fa-4x  fa-laptop"></i>
+			</span>
+		</p>
 		<h1>Create App!</h1>
 		<p>{{appname|upper}}</p>
+		<div class="form-check">
+			<input onchange="showBorder(this)" type="checkbox" class="form-check-input">
+			<label class="form-check-label">Show Border</label>
+		</div>
 
 		<div class="row">
 			<div id="app" class=" col-md-6">
 				<App/>
 			</div>
-			<div class="marvel-device note8">
+			<div id="telType" class="marvel-device note8">
 				<div class="inner"></div>
 				<div class="overflow">
 					<div class="shadow"></div>
@@ -29,4 +48,20 @@
 		</div>
 	</div>
 	<script src="./js/module.js"></script>
+	<script>
+		function changeDisplayType(data) {
+let aa = document.getElementById('telType');
+aa.className = '';
+aa.classList.add("marvel-device");
+aa.classList.add(data);
+}
+function showBorder(data) {
+let phone = document.getElementById('phone');
+if (data.checked) {
+phone.classList.add("showBorderInPhone");
+} else {
+phone.classList.remove("showBorderInPhone");
+}
+}
+	</script>
 {% endblock %}

@@ -12,9 +12,10 @@ import './styles/app.css';
 import './bootstrap';
 import Vue from 'vue';
 import App from './App.vue';
-
+// import * as components from './components/module'
 
 new Vue({
     el: "#app",
     components: { App }
+
 })
