@@ -44,7 +44,8 @@
 				<div class="volume"></div>
 				<div class="camera"></div>
 				<div class="screen">
-					<div class="  rounded phoneMaster row d-flex justify-content-center" id="phone"></div>
+					<iframe id="myframe1" style="    width: inherit;
+												    height: inherit;" scrolling="no" style="height: inherit;padding: 0 !important; overflow:hidden; width: 100vw;max-width: 100%;" src="./app"></iframe>
 				</div>
 			</div>
 
@@ -52,6 +53,7 @@
 	</div>
 	<script src="./js/module.js"></script>
 	<script>
+
 		function changeDisplayType(data) {
 let aa = document.getElementById('telType');
 aa.className = '';
@@ -59,7 +61,7 @@ aa.classList.add("marvel-device");
 aa.classList.add(data);
 }
 function showBorder(data) {
-let phone = document.getElementById('phone');
+let phone = document.getElementById('myframe1').contentWindow.document.getElementById('phone');
 if (data.checked) {
 phone.classList.add("showBorderInPhone");
 } else {

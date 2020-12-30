@@ -24,6 +24,16 @@ class FrontEndController extends AbstractController
     }
 
     /**
+     * @Route("/app", name="app")
+     */
+    public function app()
+    {
+
+
+        return $this->render("FrontEnd/app.html.twig");
+    }
+
+    /**
      * @Route("/pdf/{url?0}", name="pdf", requirements={"url"=".+"} )
      */
     public function pdf($url)

@@ -133,7 +133,9 @@
 </template>
 
 <script>
-let el = document.getElementById('phone');
+
+/*
+let el = document.getElementById('myframe1').contentWindow.document.getElementById('phone');
 let y = 0, top = 0;
 
 let draggingFunction = (e) => {
@@ -148,7 +150,13 @@ el.addEventListener('mousedown', (e) => {
     y = e.pageY;
     top = el.scrollTop;
     document.addEventListener('mousemove', draggingFunction);
-});
+});*/
+
+
+
+
+
+
 //test
 
 let id = 1;
@@ -215,7 +223,7 @@ let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [
                 { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, },
                 { name: "Img Slider", type: "slider", icon: "fas fa-sliders-h", id: 7, data: [], typestyle: [],size: 0, }];
 
-let size= [1,2,3,4,5,6,7,8,9,10,11,12];
+let size= [25,50,75,100,"auto"];
 
 import draggable from "vuedraggable";
 export default {
@@ -246,7 +254,9 @@ export default {
     },
   methods: {
     insertModuleInPhone: function(typed,id,inputNumber) {
-      let phone = document.getElementById('phone');
+      let phone =document.getElementById('myframe1').contentWindow.document.getElementById('phone');
+      
+      // let phone = document.getElementById('myframe1').contentWindow.document.getElementById('phone');
       phone.style = 'background-color:'+this.basicAppInfo.data["backgroundColor"];
       phone.innerHTML="";
       let i=0;
@@ -283,7 +293,7 @@ export default {
         attr.value = "moduleInput" + i;
         addCode.setAttributeNode(attr);
         let addData = document.getElementById("moduleInput" + i);
-        addCode.classList.add("col-md-"+this.list2[key].size);
+        addCode.classList.add("w-"+this.list2[key].size);
         if(this.list2[key].type === "img"){
           addCode.src = this.list2[key].data[0];
           addCode.alt = this.list2[key].data[1];
@@ -300,7 +310,7 @@ export default {
           addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
           addCode.innerHTML = '<iframe style=" position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;" src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
         }else if(this.list2[key].type === "slider"){
-          addCode.style = "height: 215px; padding: 0 !important;";         
+          addCode.style = "min-height: 215px; padding: 0 !important;";         
           addCode.innerHTML = '<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">  <div class="carousel-inner">    <div class="carousel-item active">      <img src="'+this.list2[key].data[0]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[1]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[2]+'" class="d-block w-100" >    </div>  </div>  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">    <span class="carousel-control-prev-icon" aria-hidden="true"></span>    <span class="visually-hidden">Previous</span>  </a>  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">    <span class="carousel-control-next-icon" aria-hidden="true"></span>    <span class="visually-hidden">Next</span>';
         }else if(this.list2[key].type === "space"){
           addCode.style = "height: 100px;"; 
@@ -368,7 +378,7 @@ export default {
     }
   },
    created: function(){
-        this.insertModuleInPhone("null",0)
-      }
+     setTimeout(() => this.insertModuleInPhone("null",0), 500);
+     }
 };
 </script>
