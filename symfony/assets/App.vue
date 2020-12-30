@@ -190,6 +190,11 @@ let modulesCode4 = {
       type:["div"],
       input:["address"],
       acro:["Add your address here"]
+      },
+    slider:{
+      type:["div"],
+      input:["src1","src2","src3"],
+      acro:["Add your slider img 1 here", "Add your slider img 2 here", "Add your slider img 3 here",]
       }
 };
 let basicAppInfo;
@@ -207,20 +212,18 @@ let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [
                 { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], typestyle: [],size: 0, },
                 { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], typestyle: [],size: 0, },
                 { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], typestyle: [],size: 0, },
-                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, }];
-let modulesCode = {
-    txt:"h1",img: "img",link: "a",video: "div"}
+                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, },
+                { name: "Img Slider", type: "slider", icon: "fas fa-sliders-h", id: 7, data: [], typestyle: [],size: 0, }];
+
 let size= [1,2,3,4,5,6,7,8,9,10,11,12];
-import pdf from 'vue-pdf'
+
 import draggable from "vuedraggable";
 export default {
-
   name: "clone",
   display: "Clone",
   order: 1,
   components: {
-    draggable,
-    pdf
+    draggable
   },
     data() {
       if(localStorage.getItem('list2')){
@@ -287,7 +290,7 @@ export default {
           
           addCode.style = "max-width: inherit;height: 100%;";
         }else if(this.list2[key].type === "pdf"){
-          addCode.style = "hight:280px; padding: 0 !important;"; 
+          addCode.style = "height: 280px; padding: 0 !important;"; 
           addCode.innerHTML = '<iframe scrolling="no" style="height: inherit;padding: 0 !important; overflow:hidden; width: 100vw;max-width: 100%;" src="http://localhost:9090/pdf/'+this.list2[key].data[1]+'"></iframe>';
         }else if(this.list2[key].type === "map"){
           addCode.style = "hight:280px !important; padding: 0 !important;"; 
@@ -296,6 +299,9 @@ export default {
           let getFullVideoUrl = this.list2[key].data[0];
           addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
           addCode.innerHTML = '<iframe style=" position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;" src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        }else if(this.list2[key].type === "slider"){
+          addCode.style = "height: 215px; padding: 0 !important;";         
+          addCode.innerHTML = '<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">  <div class="carousel-inner">    <div class="carousel-item active">      <img src="'+this.list2[key].data[0]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[1]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[2]+'" class="d-block w-100" >    </div>  </div>  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">    <span class="carousel-control-prev-icon" aria-hidden="true"></span>    <span class="visually-hidden">Previous</span>  </a>  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">    <span class="carousel-control-next-icon" aria-hidden="true"></span>    <span class="visually-hidden">Next</span>';
         }else if(this.list2[key].type === "space"){
           addCode.style = "height: 100px;"; 
           addCode.tag = this.list2[key].data[0];

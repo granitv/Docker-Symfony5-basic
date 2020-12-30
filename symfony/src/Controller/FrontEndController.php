@@ -24,13 +24,13 @@ class FrontEndController extends AbstractController
     }
 
     /**
-     * @Route("/pdf/{url?0}", name="pdf")
+     * @Route("/pdf/{url?0}", name="pdf", requirements={"url"=".+"} )
      */
     public function pdf($url)
     {
         $src = $url;
         return $this->render("FrontEnd/pdf.html.twig", [
-            "src" => "./assets/$src"
+            "src" => $src
         ]);
     }
 
