@@ -115,7 +115,7 @@
             <div class="col-md-3">
               <label>Size:</label>
               <select  @change="insertModuleInPhone(element.type,index,0);" class="form-control col-md-3" :id="'moduleSize' + index">
-              <option  v-for="(element2, index) in size" :value="element2"  :selected="element.size == element2  || (element.size == 0 && element2 == 12)"  >{{element2}}</option>
+              <option  v-for="(element2, index) in size" :value="element2"  :selected="element.size == element2  || (element.size == 0 && element2 == 100)"  >{{element2}}</option>
                 </select>
                  </div>
                 <div class="col-md-4">
@@ -210,7 +210,12 @@ let modulesCode4 = {
     slider:{
       type:["div"],
       input:["src1","src2","src3"],
-      acro:["Add your slider img 1 here", "Add your slider img 2 here", "Add your slider img 3 here",]
+      acro:["Add your slider img 1 here", "Add your slider img 2 here", "Add your slider img 3 here"]
+      },
+    imgTitleTextHorizontal:{
+      type:["div"],
+      input:["img","title","text"],
+      acro:["Add your image url here", "Add your title here", "Add your text here"]
       }
 };
 let basicAppInfo;
@@ -228,8 +233,9 @@ let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [
                 { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], typestyle: [],size: 0, align: "center", },
                 { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], typestyle: [],size: 0, align: "center", },
                 { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], typestyle: [],size: 0, align: "center", },
-                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, align: "center", },
-                { name: "Img Slider", type: "slider", icon: "fas fa-sliders-h", id: 7, data: [], typestyle: [],size: 0, align: "center", }];
+                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 8, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Img Slider", type: "slider", icon: "fas fa-sliders-h", id: 9, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Img Text Horizontal", type: "imgTitleTextHorizontal", icon: "fas fa-image", id: 10, data: [], typestyle: [],size: 0, align: "center", }];
 
 let size= [25,50,75,100]; //+auto
 let align= ["start","center","end"];
@@ -268,7 +274,7 @@ export default {
       let phone =document.getElementById('myframe1').contentWindow.document.getElementById('phone');
       
       // let phone = document.getElementById('myframe1').contentWindow.document.getElementById('phone');
-      phone.style = 'background-color:'+this.basicAppInfo.data["backgroundColor"];
+      phone.style.backgroundColor = this.basicAppInfo.data["backgroundColor"];
       phone.innerHTML="";
       let i=0;
       // save to list2     
@@ -307,7 +313,7 @@ export default {
         addCode.setAttributeNode(attr);
         let addData = document.getElementById("moduleInput" + i);
         addCode.classList.add("d-flex");
-        addCode.classList.add("p-3");
+        addCode.classList.add("p-0");
         addCode.classList.add("justify-content-"+this.list2[key].align);//start end
         addCode.classList.add("w-"+this.list2[key].size);
         if(this.list2[key].type === "img"){
@@ -315,19 +321,22 @@ export default {
           addCode.alt = this.list2[key].data[1];
 
           addCode.style = "max-width: inherit;height: 100%;";
+        }else if(this.list2[key].type === "imgTitleTextHorizontal"){
+          addCode.style = "height: 205px;"; 
+          addCode.innerHTML = ' <div class="border rounded d-flex w-100 m-2 ">    <div class="w-100 d-flex justify-content-center" style="margin: auto; ">    <span style="background-size: cover;height: 125px; width: 125px; background-position: center; background-image: url('+this.list2[key].data[0]+'); border-radius: 50%; display: inline-block;"><span>    </div>    <div class="w-100 p-2" style="margin: auto;">        <h1>'+this.list2[key].data[1]+'</h1>        <p>'+this.list2[key].data[2]+'</p>    </div></div>';
         }else if(this.list2[key].type === "pdf"){
-          addCode.style = "height: 280px; padding: 0 !important;"; 
+          addCode.style = "height: 280px; "; 
           addCode.innerHTML = '<iframe scrolling="no" style="height: inherit;padding: 0 !important; overflow:hidden; width: 100vw;max-width: 100%;" src="http://localhost:9090/pdf/'+this.list2[key].data[1]+'"></iframe>';
         }else if(this.list2[key].type === "map"){
-          addCode.style = "hight:280px !important; padding: 0 !important;"; 
+          addCode.style = "hight:280px !important; "; 
           addCode.innerHTML = '<div style="width: 100%"><iframe width="100%" height="inherit" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q='+this.list2[key].data[0]+'&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe></div>';
         }else if(this.list2[key].type === "video"){
           let getFullVideoUrl = this.list2[key].data[0];
           addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
           addCode.innerHTML = '<iframe style=" position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;" src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
         }else if(this.list2[key].type === "slider"){
-          addCode.style = "min-height: 215px; padding: 0 !important;";         
-          addCode.innerHTML = '<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">  <div class="carousel-inner">    <div class="carousel-item active">      <img src="'+this.list2[key].data[0]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[1]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[2]+'" class="d-block w-100" >    </div>  </div>  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">    <span class="carousel-control-prev-icon" aria-hidden="true"></span>    <span class="visually-hidden">Previous</span>  </a>  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">    <span class="carousel-control-next-icon" aria-hidden="true"></span>    <span class="visually-hidden">Next</span>';
+          addCode.style = "min-height: 215px;";         
+          addCode.innerHTML = '<div id="sliderControls'+key+'" class="d-flex w-100 carousel slide" data-bs-ride="carousel">  <div class="carousel-inner">    <div class="carousel-item active">      <img src="'+this.list2[key].data[0]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[1]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[2]+'" class="d-block w-100" >    </div>  </div>  <a class="carousel-control-prev" href="#sliderControls'+key+'" role="button" data-bs-slide="prev">    <span class="carousel-control-prev-icon" aria-hidden="true"></span>    <span class="visually-hidden">Previous</span>  </a>  <a class="carousel-control-next" href="#sliderControls'+key+'" role="button" data-bs-slide="next">    <span class="carousel-control-next-icon" aria-hidden="true"></span>    <span class="visually-hidden">Next</span>';
         }else if(this.list2[key].type === "space"){
           addCode.style = "height: 100px;"; 
           addCode.tag = this.list2[key].data[0];
@@ -337,7 +346,6 @@ export default {
         }else{
           addCode.innerHTML = this.list2[key].data[0];
         }
-        addCode.style ='padding: 0px !important;';
         phone.appendChild(addCode);
         i++;
       }
