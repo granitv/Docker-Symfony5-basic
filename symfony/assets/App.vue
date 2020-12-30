@@ -111,12 +111,20 @@
 
             
               
-            <div class="col-md-2">
+          <div class="row">
+            <div class="col-md-3">
               <label>Size:</label>
               <select  @change="insertModuleInPhone(element.type,index,0);" class="form-control col-md-3" :id="'moduleSize' + index">
               <option  v-for="(element2, index) in size" :value="element2"  :selected="element.size == element2  || (element.size == 0 && element2 == 12)"  >{{element2}}</option>
+                </select>
+                 </div>
+                <div class="col-md-4">
+                <label>Align:</label>
+              <select  @change="insertModuleInPhone(element.type,index,0);" class="form-control col-md-3" :id="'moduleAlign' + index">
+              <option  v-for="(element3, index) in align" :value="element3"  :selected="element.align == element3 "  >{{element3}}</option>
             </select>
             </div>
+          </div>
           </div>
         </div>
       
@@ -213,17 +221,18 @@ if(localStorage.getItem('appData')){
   acro:{name: "App name:", version: "App version:", backgroundColor:"App background color:", iconUrl:"App icon:", splashScreenUrl:"App splashscreen:", description:"App description:"}}; 
 }
 
-let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], typestyle: [],size: 0, },
-                { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], typestyle: [],size: 0, },
-                { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], typestyle: [],size: 0, },
-                { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], typestyle: [],size: 0, },
-                { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], typestyle: [],size: 0, },
-                { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], typestyle: [],size: 0, },
-                { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], typestyle: [],size: 0, },
-                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, },
-                { name: "Img Slider", type: "slider", icon: "fas fa-sliders-h", id: 7, data: [], typestyle: [],size: 0, }];
+let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Text", type: "txt", icon: "fas fa-font", id: 2, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Map", type: "map", icon: "fas fa-map", id: 3, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Icon", type: "icon", icon: "fas fa-icons", id: 4, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Link", type: "link", icon: "fas fa-link", id: 5, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Space", type: "space", icon: "fas fa-people-arrows", id: 6, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "YT Video", type: "video", icon: "fas fa-video", id: 7, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Pdf File", type: "pdf", icon: "fas fa-file-pdf", id: 7, data: [], typestyle: [],size: 0, align: "center", },
+                { name: "Img Slider", type: "slider", icon: "fas fa-sliders-h", id: 7, data: [], typestyle: [],size: 0, align: "center", }];
 
-let size= [25,50,75,100,"auto"];
+let size= [25,50,75,100]; //+auto
+let align= ["start","center","end"];
 
 import draggable from "vuedraggable";
 export default {
@@ -240,7 +249,8 @@ export default {
               list1: modules,
             size: size,
             modulesCode4 : modulesCode4,
-            basicAppInfo: basicAppInfo
+            basicAppInfo: basicAppInfo,
+            align:align
         };
       }else{
         return {
@@ -248,7 +258,8 @@ export default {
          list1: modules,
            size: size,
            modulesCode4 : modulesCode4,
-            basicAppInfo: basicAppInfo
+            basicAppInfo: basicAppInfo,
+            align:align
         };
       }
     },
@@ -264,6 +275,8 @@ export default {
       if(typed !== "null"){
           let inputSize = document.getElementById('moduleSize' + id);
           this.list2[id].size = inputSize.value;
+          let inputAlign = document.getElementById('moduleAlign' + id);
+          this.list2[id].align = inputAlign.value;
           if(modulesCode4[this.list2[id].type].type.length > 0){
           let resultat ="";
           var radios = document.getElementsByName('smallModule'+typed +'option'+id);
@@ -293,11 +306,14 @@ export default {
         attr.value = "moduleInput" + i;
         addCode.setAttributeNode(attr);
         let addData = document.getElementById("moduleInput" + i);
+        addCode.classList.add("d-flex");
+        addCode.classList.add("p-3");
+        addCode.classList.add("justify-content-"+this.list2[key].align);//start end
         addCode.classList.add("w-"+this.list2[key].size);
         if(this.list2[key].type === "img"){
           addCode.src = this.list2[key].data[0];
           addCode.alt = this.list2[key].data[1];
-          
+
           addCode.style = "max-width: inherit;height: 100%;";
         }else if(this.list2[key].type === "pdf"){
           addCode.style = "height: 280px; padding: 0 !important;"; 
@@ -321,6 +337,7 @@ export default {
         }else{
           addCode.innerHTML = this.list2[key].data[0];
         }
+        addCode.style ='padding: 0px !important;';
         phone.appendChild(addCode);
         i++;
       }

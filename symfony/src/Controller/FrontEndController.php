@@ -80,7 +80,7 @@ class FrontEndController extends AbstractController
      */
     public function createApp()
     {
-        $prenom = "Test app name";
+        /*   $prenom = "Test app name";
         $text = "App name";
         // file_put_contents('test.html', $text, FILE_APPEND | LOCK_EX);
         $oldMessage = 'name="App225"';
@@ -92,10 +92,8 @@ class FrontEndController extends AbstractController
         $str = str_replace($oldMessage, $deletedFormat, $str);
 
         //write the entire string
-        file_put_contents('test.html', $str);
+        file_put_contents('test.html', $str);*/
 
-        return $this->render("FrontEnd/createapp.html.twig", [
-            'appname' => $prenom
-        ]);
+        return $this->render("FrontEnd/createapp.html.twig", []);
     }
 }

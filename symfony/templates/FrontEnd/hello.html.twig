@@ -5,18 +5,7 @@
 		{{ name }}!</h1>
 
 	<div class="container">
-		<div class="row justify-content-between">
-			<div class="col-md-5 bg-info rounded p-2">
-
-				<p class="btn btn-primary m-1" onclick="moduleDetailes(1)">Module1 Add h1 Text .</p>
-				<input id="module1" type="text" placeholder="Module 1" class="form-control" style="display:none;" onkeyup="addModule(1);"/>
-				<p class="btn btn-success m-1" onclick="moduleDetailes(2)">Module2 Add p Text</p>
-				<input id="module2" type="text" placeholder="Module 2" class="form-control" style="display:none;" onkeyup="addModule(2);"/>
-				<p class="btn btn-dark m-1" onclick="moduleDetailes(3)">Module3 Add li Text</p>
-				<input id="module3" type="text" placeholder="Module 3" class="form-control" style="display:none;" onkeyup="addModule(3);"/>
-
-			</div>
-			<div class="col-md-5 bg-success rounded" style="minheight: 250px" id="phone"></div>
+		{{ form(form) }}
 		</div>
 
 
