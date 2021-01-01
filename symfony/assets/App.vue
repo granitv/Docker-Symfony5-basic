@@ -5,21 +5,21 @@
   
     <div class="row">
         <!-- Button trigger modal -->
-        <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn-sm btn-primary col-md-4" data-bs-toggle="modal" data-bs-target="#appData">
         Add App Data
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="appData" tabindex="-1" aria-labelledby="appDataLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="appDataLabel">App Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
 
-        <div class="col-md-6" v-for="(dataInput, dataInputIndex) in basicAppInfo.data" > 
+              <div class="col-md-6" v-for="(dataInput, dataInputIndex) in basicAppInfo.data" > 
                 <input class="form-control m-1" type="text" :id="'appData'+dataInputIndex" 
                  :value="basicAppInfo.data[dataInputIndex]" :placeholder="basicAppInfo.acro[dataInputIndex]" />
               </div>
@@ -31,11 +31,74 @@
             </div>
           </div>
         </div>
-  
+        <!-- Button trigger modal -->
+        <button type="button" class="btn-sm btn-primary col-md-2" data-bs-toggle="modal" data-bs-target="#appPages">
+        Pages
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="appPages" tabindex="-1" aria-labelledby="appPagesLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="appPagesLabel">Pages</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+<!--test 
+  <div v-for="(inputT, smallIndex) in modulesCode4[element.type].input">
+            <input :id="'smallModule'+element.type +index+ smallIndex"  type="text" :placeholder="modulesCode4[element.type].acro[smallIndex]" class="form-control m-1  " 
+              :value="element.data[smallIndex]" @keyup="insertModuleInPhone(element.type,index,smallIndex)" @change="insertModuleInPhone(element.type,index, smallIndex);"/>
+            </div>
+             <div class="row"><button type="button" class="btn-sm btn-light col-md-6" ></button>
+                <button type="button" class="btn-sm btn-info col-md-6" >Edit</button></div>
+            test -->
+              <div class="col-md-12" >
+                <div class="col-md-12" v-for="(page, pageIndex) in appPages.page" > 
+                  <div class="accordion" id="accordionExample">
+
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" :id="'headingOne'+pageIndex">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapseOne'+pageIndex" aria-expanded="true" :aria-controls="'collapseOne'+pageIndex">
+                        {{appPages.page[pageIndex].name}} <small style="margin: auto;">Click To Edit</small>
+                        </button>
+                      </h2>
+                      <div :id="'collapseOne'+pageIndex" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <div v-for="(pageValue, pageType, pageElementIndex) in appPages.page[pageIndex]"> <!-- pageInput == datat // pageInputIndex == type -->
+                            <input class="form-control m-1" type="text" :id="'appPage'+pageType+pageIndex" 
+                            :value="pageValue" :placeholder="appPages.acro[pageElementIndex]" />
+                           
+                          </div>
+                          <button type="button" class="btn btn-primary" @click="savePageData(pageIndex);">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                     
+                  </div>
+                  
+                 </div>
+                 
+              </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+         <div class="col-md-4">
+                <label>Edit Page:</label> <!-- @change="insertModuleInPhone(element.type,index,0);" -->
+              <select @change="editPageFun();"  class="form-control col-md-3" id="editPageId">
+              <option  v-for="(page, pageIndex) in appPages.page" :value="appPages.page[pageIndex].id"  :selected="appPages.page[pageIndex].onedit == 1 "  > {{appPages.page[pageIndex].name}}</option>
+            </select>
+            </div>
 
 
      
     </div>
+    
     <div class="col-4">
 
       <h3>Modules</h3>
@@ -141,9 +204,7 @@
 </template>
 
 <script>
-
-/*
-let el = document.getElementById('myframe1').contentWindow.document.getElementById('phone');
+/* let el = document.getElementById('myframe1').contentWindow.document.getElementById('phone');
 let y = 0, top = 0;
 
 let draggingFunction = (e) => {
@@ -159,17 +220,8 @@ el.addEventListener('mousedown', (e) => {
     top = el.scrollTop;
     document.addEventListener('mousemove', draggingFunction);
 });*/
-
-
-
-
-
-
 //test
-
 let id = 1;
-
-
 let modulesCode4 = {
     txt:{
       type:["h1","p"],
@@ -188,7 +240,7 @@ let modulesCode4 = {
       acro:["Add your text here","Add your link here"]
       },
     video:{
-      type:["div"],
+      type:["iframe"],
       input:["src"],
       acro:["Add your youtube url here"]
       },
@@ -218,12 +270,30 @@ let modulesCode4 = {
       acro:["Add your image url here", "Add your title here", "Add your text here"]
       }
 };
+
 let basicAppInfo;
 if(localStorage.getItem('appData')){
   basicAppInfo = JSON.parse(localStorage.getItem('appData'));
 }else{
   basicAppInfo ={ data:{name: "", version: "", backgroundColor:"", iconUrl:"", splashScreenUrl:"", description:""},
   acro:{name: "App name:", version: "App version:", backgroundColor:"App background color:", iconUrl:"App icon:", splashScreenUrl:"App splashscreen:", description:"App description:"}}; 
+};
+
+let appPages;
+if(localStorage.getItem('appPages')){
+  appPages = JSON.parse(localStorage.getItem('appPages'));
+}else{
+  appPages ={ page:[{ id: 1, name: "home",fileName: "home.html", primary: 1, order: 0, onedit: 1},
+                    { id: 2, name: "about",fileName: "about.html", primary: 0, order: 1,  onedit: 0},
+                    { id: 3, name: "gallery",fileName: "gallery.html", primary: 0, order: 2,  onedit: 0}],
+  acro:{name: "Page name:", fileName: "pagename.html", primary:"if homepage write 1", order:"page order 0 1 2 3",  onedit: "if edit write 1 else 0"}}; 
+};
+
+let onEditPage = 0;
+for(var page in appPages.page){
+  if(appPages.page[page].onedit == 1){
+    onEditPage = appPages.page[page].id
+  }
 }
 
 let modules = [ { name: "Img", type: "img", icon: "fas fa-image", id: 1, data: [], typestyle: [],size: 0, align: "center", },
@@ -249,14 +319,15 @@ export default {
     draggable
   },
     data() {
-      if(localStorage.getItem('list2')){
+      if(localStorage.getItem('list2-'+onEditPage)){
         return {
-            list2: JSON.parse(localStorage.getItem('list2')),
+            list2: JSON.parse(localStorage.getItem('list2-'+onEditPage)),
               list1: modules,
             size: size,
             modulesCode4 : modulesCode4,
             basicAppInfo: basicAppInfo,
-            align:align
+            align:align,
+            appPages: appPages
         };
       }else{
         return {
@@ -265,7 +336,8 @@ export default {
            size: size,
            modulesCode4 : modulesCode4,
             basicAppInfo: basicAppInfo,
-            align:align
+            align:align,
+            appPages: appPages
         };
       }
     },
@@ -332,8 +404,9 @@ export default {
           addCode.innerHTML = '<div style="width: 100%"><iframe width="100%" height="inherit" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q='+this.list2[key].data[0]+'&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe></div>';
         }else if(this.list2[key].type === "video"){
           let getFullVideoUrl = this.list2[key].data[0];
-          addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */  height: 0;";          
-          addCode.innerHTML = '<iframe style=" position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;" src="https://www.youtube.com/embed/'+this.getYouTubeID(getFullVideoUrl)+'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+          addCode.style = "position: relative;  padding-bottom: 56.25%; /* 16:9 */     top: 0;  left: 0;  width: 100%;  ";          
+          addCode.src = "https://www.youtube.com/embed/"+this.getYouTubeID(getFullVideoUrl)+"";          
+          //addCode.innerHTML = '<iframe style="" src=" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
         }else if(this.list2[key].type === "slider"){
           addCode.style = "min-height: 215px;";         
           addCode.innerHTML = '<div id="sliderControls'+key+'" class="d-flex w-100 carousel slide" data-bs-ride="carousel">  <div class="carousel-inner">    <div class="carousel-item active">      <img src="'+this.list2[key].data[0]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[1]+'" class="d-block w-100" >    </div>    <div class="carousel-item">      <img src="'+this.list2[key].data[2]+'" class="d-block w-100" >    </div>  </div>  <a class="carousel-control-prev" href="#sliderControls'+key+'" role="button" data-bs-slide="prev">    <span class="carousel-control-prev-icon" aria-hidden="true"></span>    <span class="visually-hidden">Previous</span>  </a>  <a class="carousel-control-next" href="#sliderControls'+key+'" role="button" data-bs-slide="next">    <span class="carousel-control-next-icon" aria-hidden="true"></span>    <span class="visually-hidden">Next</span>';
@@ -381,10 +454,28 @@ export default {
     getYouTubeID: function(url){
       url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
       return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
-    },
+    }/*,
+    editPageFun: function(){
+      let input = document.getElementById('editPageId');
+      for(var page in appPages.page){
+        this.appPages.page[page].onedit = 0;
+      }
+      console.log(this.appPages.page[input].onedit);
+      this.appPages.page[input-1].onedit = 1;
+      localStorage.setItem('appPages', JSON.stringify(this.appPages));
+      this.insertModuleInPhone("null",0);
+    }*/,
     finishModule: function() {
-       localStorage.setItem('list2', JSON.stringify(this.list2));
+       localStorage.setItem('list2-'+onEditPage, JSON.stringify(this.list2));
        alert("saved");
+    },
+    savePageData: function(pageIndex) {
+      for (var key in this.appPages.page[pageIndex]) { 
+        let getInput = document.getElementById('appPage'+[key]+pageIndex);
+        this.appPages.page[pageIndex][key] = getInput.value;
+      }
+      localStorage.setItem('appPages', JSON.stringify(this.appPages));
+      alert("saved App Page");
     },
     saveAppData: function() {
      
